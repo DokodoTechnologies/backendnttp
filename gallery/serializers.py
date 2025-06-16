@@ -1,30 +1,34 @@
-# serializers.py
-
 from rest_framework import serializers
 from .models import Album, Image
 
-from .models import Album, Image
-class AlbumSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Album
-        fields = ['id', 'title', 'createdAt']
-
 class ImageSerializer(serializers.ModelSerializer):
-    album = serializers.CharField(write_only=True)  # incoming string title
-    album_info = serializers.SerializerMethodField(read_only=True) 
-
     class Meta:
         model = Image
-        fields = ['id', 'title', 'imageFile', 'album', 'uploadedAt','album_info']
-        read_only_fields = ['id', 'uploadedAt']
-    def create(self, validated_data):
-        album_title = validated_data.pop('album')
-        album, _ = Album.objects.get_or_create(title=album_title)
-        image = Image.objects.create(album=album, **validated_data)
-        return image
+        fields = ['id', 'imageFile', 'uploadedAt']
 
-    def get_album_info(self, obj):
-        return {
-            "id": obj.album.id,
-            "title": obj.album.title
-        }
+class AlbumSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Album
+        fields = ['id', 'title', 'createdAt', 'images']
+
+class AlbumUploadSerializer(serializers.Serializer):
+    album = serializers.CharField(max_length=255)
+    imageFile = serializers.ListField(
+        child=serializers.ImageField(),
+        write_only=True
+    )
+
+    def create(self, validated_data):
+        title = validated_data.get('album')
+        images = validated_data.get('imageFile')
+
+        # Create album
+        album = Album.objects.create(title=title)
+
+        # Create images
+        for image in images:
+            Image.objects.create(album=album, imageFile=image)
+
+        return album

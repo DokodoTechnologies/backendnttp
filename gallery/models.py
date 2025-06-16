@@ -10,7 +10,6 @@ class Album(models.Model):
 
 class Image(models.Model):
     album = models.ForeignKey(Album, related_name='images', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
     imageFile = models.ImageField(upload_to='gallery_images/')
     uploadedAt = models.DateTimeField(auto_now_add=True)
 

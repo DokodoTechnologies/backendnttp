@@ -7,4 +7,5 @@ router.register(r'image', ImageViewSet, basename='image')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('upload-album/', AlbumUploadView.as_view(), name='upload-album'),
 ]
