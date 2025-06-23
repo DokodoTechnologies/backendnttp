@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'user',
-    'gallery'
+    'gallery',
+    'events'
 ]
 
 REST_FRAMEWORK = {
