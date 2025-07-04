@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,13 +28,14 @@ SECRET_KEY = 'django-insecure-7u5cwathr5drx42ac@xegfd+-27lrq%v%f65-7o*^(q5yfn=e4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fa77-27-34-90-109.ngrok-free.app','127.0.0.1','localhost']
 AUTH_USER_MODEL = 'user.User'
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +48,15 @@ INSTALLED_APPS = [
     'gallery',
     'events'
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "My Admin",
+    "site_header": "Nttp admin",
+    "welcome_sign": "Welcome to the dashboard",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -62,7 +73,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+SIMPLE_JWT = {
+    # 'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
 ROOT_URLCONF = 'nttp.urls'
 
 TEMPLATES = [

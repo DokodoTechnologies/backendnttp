@@ -4,6 +4,7 @@ from .views import *
 
 router = DefaultRouter()
 router.register(r'image', ImageViewSet, basename='image')
+router.register(r'album',AlbumViewSet, basename='album')
 
 urlpatterns = [
     path('', include(router.urls)),

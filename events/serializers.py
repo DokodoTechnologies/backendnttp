@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from models import Events
+from .models import Events
 
-class EventsSerializers(serializers.Serializer):
-    class meta:
+class EventsSerializers(serializers.ModelSerializer):
+    class Meta:
         model = Events
         fields = ['event_title','description','date','location']
