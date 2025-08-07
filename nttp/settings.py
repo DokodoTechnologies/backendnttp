@@ -28,14 +28,15 @@ SECRET_KEY = 'django-insecure-7u5cwathr5drx42ac@xegfd+-27lrq%v%f65-7o*^(q5yfn=e4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fa77-27-34-90-109.ngrok-free.app','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','nttpinstitute.org.np', 'www.nttpinstitute.org.np',
+    'api.nttpinstitute.org.np']
 AUTH_USER_MODEL = 'user.User'
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,22 +47,25 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'user',
     'gallery',
-    'events'
+    'events',
+    'corsheaders'
 ]
 
-JAZZMIN_SETTINGS = {
-    "site_title": "My Admin",
-    "site_header": "Nttp admin",
-    "welcome_sign": "Welcome to the dashboard",
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-}
+# JAZZMIN_SETTINGS = {
+#     "site_title": "My Admin",
+#     "site_header": "Nttp admin",
+#     "welcome_sign": "Welcome to the dashboard",
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+#     "hide_apps": [],
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 7,
 }
 
 MIDDLEWARE = [
@@ -72,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 SIMPLE_JWT = {
     # 'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
@@ -108,7 +113,7 @@ conn_str = config("CONNECTION_STRING")
 conn_str_params = {
         pair.split("=")[0]: pair.split("=")[1] for pair in conn_str.split(" ")
 }
-
+print(conn_str)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  
@@ -138,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
